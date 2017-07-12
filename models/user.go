@@ -17,6 +17,7 @@ type User struct {
 	Id       int64
 	Name     string
 	Password string
+	Database map[string]bool
 }
 
 func EncodePassword(unencoded string) string {
