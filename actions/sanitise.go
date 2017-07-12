@@ -62,7 +62,7 @@ func removeCreateDatabaseStatements(sql string) string {
 }
 
 func removeNotPermitStatements(sql string) string {
-	pattern := regexp.MustCompile("(?i)(^TRUNCATE\\s+|^DROP\\s+TABLE\\s+|^GRANT\\s+|^REVOKE\\s+|^SET\\s+)")
+	pattern := regexp.MustCompile("(?i)(^PURGE\\s+|TRUNCATE\\s+|^DROP\\s+TABLE\\s+|^GRANT\\s+|^REVOKE\\s+|^SET\\s+)")
 	lines := strings.Split(sql, "\n")
 	output := make([]string, 0)
 	for _, line := range lines {
@@ -94,7 +94,7 @@ func removeAlterDrop(sql string) string {
 	output := make([]string, 0)
 	for _, line := range lines {
 		// remove statement which change file with no where condition.
-		if !(pattern1.MatchString(line) && !pattern2.MatchString(line)) {
+		if !(pattern1.MatchString(line) && pattern2.MatchString(line)) {
 			output = append(output, line)
 		}
 	}
