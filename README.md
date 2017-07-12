@@ -58,15 +58,16 @@ The default user is `admin` and password is also `admin`. You can change it afte
 
 ## Changelog
 
-#### 20170712 by arstercz
+#### Author by arstercz
+20170712
 
-    1. remove change password features.
-    2. add google totp to verify password.
-    3. limit sql to execute.
-        `delete/update` sql must have `where` condition;
-        `select` sql must have `where` or `limit` condition;
-         disable to execute `drop/truncate <table>`, `use <database>`, `create <database/schema>`, `drop <database/schema>`, `grant/revoke ..`;
-        format sql statement;
-    4. return error if table size is greater than 200 MB when you execute `alter table`;
-    5. limit the user only access the databases that in `usercfg.conf`, the `all` means you have all database privileges;
+1. remove change password features.
+2. add google totp to verify password.
+3. limit sql to execute.
+    `delete/update` sql must have `where` condition;
+    `select` sql must have `where` or `limit` condition;
+     disable to execute `drop/truncate <table>`, `use <database>`, `create <database/schema>`, `drop <database/schema>`, `grant/revoke ..`;
+    format sql statement;
+4. return error if table size is greater than 200 MB when you execute `alter table`;
+5. limit the user only access the databases that in `usercfg.conf`, the `all` means you have all database privileges;
 
