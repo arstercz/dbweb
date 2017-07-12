@@ -3,6 +3,7 @@ package actions
 import (
 	"errors"
 	"fmt"
+	"log"
 	"strconv"
 	"strings"
 
@@ -36,6 +37,18 @@ func (c *View) Get() error {
 		return err
 	}
 
+	dbName := getDatabaseName(o)
+	//get models.User
+	UserMsg := c.LoginUser();
+
+	//check user db access
+	log.Printf("msg: %#v\n", UserMsg)
+	_, ok1 := UserMsg.Database["all"]
+	_, ok2 := UserMsg.Database[dbName]
+	if !(ok1 || ok2) {
+		return errors.New(fmt.Sprintf("You don't have privielges to access database: %s", dbName))
+	}
+
 	var records = make([][]*string, 0)
 	var columns = make([]*core.Column, 0)
 	tb := c.Req().FormValue("tb")
@@ -46,6 +59,7 @@ func (c *View) Get() error {
 	var isTableView = len(tb) > 0
 
 	sql := c.Req().FormValue("sql")
+	log.Printf("user: %s, db: %s, origianl sql: %s\n", UserMsg.Name, dbName, sql)
 	var table *core.Table
 	var pkIdx int
 	var isExecute bool
@@ -56,12 +70,21 @@ func (c *View) Get() error {
 
 	start, _ := strconv.Atoi(c.Req().FormValue("start"))
 	limit, _ := strconv.Atoi(c.Req().FormValue("limit"))
+
+	sql2 := SanitiseSQL(sql)
+	log.Printf("user: %s, db: %s, after sanitise: %s\n", UserMsg.Name, dbName, sql2)
+	if sql != sql2 && sql2 == "" {
+		return errors.New(fmt.Sprintf("'%s' is not permit to execute, concat to administrtor", sql))
+	}
+	sql = sql2
+
+	tableName := findTableFromSql(sql)
 	if limit == 0 {
 		limit = 20
 	}
 	if sql != "" || tb != "" {
 		if sql != "" {
-			isExecute = !strings.HasPrefix(strings.ToLower(sql), "select")
+			isExecute = !strings.HasPrefix(strings.ToLower(sql), "select") && !strings.HasPrefix(strings.ToLower(sql), "show")
 		} else if tb != "" {
 			countSql = "select count(*) from `" + tb + "`"
 			sql = fmt.Sprintf("select * from `"+tb+"` LIMIT %d OFFSET %d", limit, start)
@@ -71,7 +94,16 @@ func (c *View) Get() error {
 		}
 
 		if isExecute {
+			if tableName != "" {
+				tableSize := getTableSize(o, dbName, tableName)
+				if tableSize > 200 { // table is biger than 200MB
+					return errors.New(fmt.Sprintf("table %s is too big( %d MB) to execute it, contact to Administrator", tableName, tableSize))
+				} else {
+					log.Printf("db: %s, table: %s, size: %d MB\n", dbName, tableName, tableSize)
+				}
+			}
 			res, err := o.Exec(sql)
+			log.Printf("user: %s, db: %s, execute sql: %s\n", UserMsg.Name, dbName, sql)
 			if err != nil {
 				return err
 			}
