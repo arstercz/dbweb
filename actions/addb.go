@@ -2,7 +2,7 @@ package actions
 
 import (
 	"fmt"
-
+	"strings"
 	"github.com/Unknwon/i18n"
 	"github.com/go-xorm/dbweb/models"
 	"github.com/tango-contrib/binding"
@@ -44,12 +44,19 @@ func (c *Addb) Post() {
 	dbname := c.Form("dbname")
 	username := c.Form("username")
 	passwd := c.Form("passwd")
-
+	charset := c.Form("charset")
+	if charset != strings.ToLower("utf8") && charset != strings.ToLower("utf8mb4") {
+		c.Flash.Set("ErrAdd", i18n.Tr(c.CurLang(), "charset must be utf8 or utf8mb4"))
+		c.Redirect("/addb")
+		return
+	}
+	
+	fmt.Printf("charset: %s\n", charset)
 	if engine.Driver == "sqlite3" {
 		engine.DataSource = host
 	} else {
-		engine.DataSource = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8",
-			username, passwd, host, port, dbname)
+		engine.DataSource = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=%s",
+			username, passwd, host, port, dbname, charset)
 	}
 
 	/*if err := c.MapForm(&engine); err != nil {

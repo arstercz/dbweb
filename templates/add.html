@@ -14,6 +14,7 @@
 				'host': $("#host").text(),
 				'username': $("#username").text(),
 				'dbname': $("#dbname").text(),
+				'charset': $("#charset").text(),
 				'passwd': $("#passwd").text(),
 			},
 			dataType: 'json',
@@ -82,6 +83,9 @@
 	</div>
 	<div class="form-group">
 	{{i18n .Lang "database_dbname"}}<input id="dbname" name="dbname" placeholder="{{i18n .Lang "database_dbname_hint"}}"/>
+	</div>
+	<div class="form-group">
+	{{i18n .Lang "database_charset"}}<input id="charset" name="charset" value="utf8" placeholder="{{i18n .Lang "database_charset_hint"}}"/>
 	</div>
 	<div class="form-group">
 	{{i18n .Lang "database_username"}}<input id="username" name="username" placeholder="{{i18n .Lang "database_username_hint"}}"/>
