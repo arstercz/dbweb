@@ -1,6 +1,7 @@
 package actions
 
 import (
+	"errors"
 	"github.com/Unknwon/i18n"
 	"github.com/tango-contrib/flash"
 	"github.com/tango-contrib/renders"
@@ -17,6 +18,10 @@ type ChgPass struct {
 }
 
 func (c *ChgPass) Get() error {
+
+        //disable change pass
+        return errors.New("disabled by adminitrator!")
+
 	engines, err := models.FindEngines()
 	if err != nil {
 		return err
@@ -31,6 +36,9 @@ func (c *ChgPass) Get() error {
 }
 
 func (c *ChgPass) Post() {
+        //disabled by administrator
+        c.Flash.Set("otherError", errors.New("disabled by administrator"))
+
 	oldPass := c.Req().FormValue("old_pass")
 	newPass := c.Req().FormValue("new_pass")
 	cfmPass := c.Req().FormValue("cfm_pass")
