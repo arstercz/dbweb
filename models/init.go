@@ -77,21 +77,26 @@ func Init() error {
 				Password: passwordStr,
 				Database: userItem.dbs,
 			})
-			go loopUpdate(userFind.Id, userItem)
 		}
+		go loopUpdate(userItem)
 
 	}
 	return err
 }
 
-func loopUpdate(id int64, userItem *usermsg) {
+func loopUpdate(userItem *usermsg) {
 	for {
+		userFind, err := GetUserByName(userItem.name)
+		if err != nil {
+			log.Printf("cann't find Id for user %s ...\n", userItem.name)
+			continue
+		}
 		Tremain, err := getOtpPassremain(userItem.secret)
 		time.Sleep(time.Duration(Tremain) * time.Second)
 		totp, err := getOtpPass(userItem.secret)
 		passwordStr := userItem.pass + strconv.FormatUint(uint64(totp), 10)
 		err = UpdateUser(&User{
-			Id:       id,
+			Id:       userFind.Id,
 			Name:     userItem.name,
 			Password: passwordStr,
 			Database: userItem.dbs,
