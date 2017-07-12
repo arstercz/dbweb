@@ -23,6 +23,7 @@ import (
 func SanitiseSQL(sql string) string {
 	sql = MergeSpace(sql)
 	sql = ConvertToUnixLineEndings(sql)
+	sql = removeAlterDrop(sql)
 	sql = removeCreateDatabaseStatements(sql)
 	sql = removeNotPermitStatements(sql)
 	sql = removeChangeNoWhere(sql)
@@ -75,6 +76,20 @@ func removeNotPermitStatements(sql string) string {
 func removeChangeNoWhere(sql string) string {
 	pattern1 := regexp.MustCompile("(?i)(^DELETE\\s+|^UPDATE\\s+)")
 	pattern2 := regexp.MustCompile("(?i)(\\s+WHERE\\s+)")
+	lines := strings.Split(sql, "\n")
+	output := make([]string, 0)
+	for _, line := range lines {
+		// remove statement which change file with no where condition.
+		if !(pattern1.MatchString(line) && !pattern2.MatchString(line)) {
+			output = append(output, line)
+		}
+	}
+	return strings.Join(output, "\n")
+}
+
+func removeAlterDrop(sql string) string {
+	pattern1 := regexp.MustCompile("(?i)(^ALTER\\s+)")
+	pattern2 := regexp.MustCompile("(?i)(\\s+DROP\\s+)")
 	lines := strings.Split(sql, "\n")
 	output := make([]string, 0)
 	for _, line := range lines {
