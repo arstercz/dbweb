@@ -26,7 +26,7 @@ import (
 )
 
 var (
-	sessionTimeout = time.Minute * 20
+	sessionTimeout = time.Minute * 10
 )
 
 func isNil(a interface{}) bool {
