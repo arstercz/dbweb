@@ -20,7 +20,7 @@ type Addb struct {
 }
 
 func (c *Addb) Get() error {
-	engines, err := models.FindEngines()
+	engines, err := c.findEngines()
 	if err != nil {
 		return err
 	}

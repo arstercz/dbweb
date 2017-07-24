@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex">
+    <link rel="stylesheet"  href="//unpkg.com/iview/dist/styles/iview.css">
+    <script type="text/javascript" src="/public/js/vue.min.js"></script>
+    <script type="text/javascript" src="/public/js/iview.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <Modal v-model="visible" ok-text="ok" cancel-text="" @on-ok="ok" title="Warning" closable=false width=620>{{.warning}}</Modal>
+</div>
+
+<script>
+   new Vue({
+       el: '#app', //app
+       data: {
+           visible: true  //visi
+       }, // data
+       methods: {
+           ok () {
+               //this.$Message.warning('点击了确定');
+	       history.go(-1);
+           }, //data
+           show: function () {
+               this.visible = true;
+           }
+       }
+   }) //data
+</script>
+</body>
+</html>

@@ -2,7 +2,7 @@ package actions
 
 import (
 	"github.com/go-xorm/core"
-	"github.com/go-xorm/dbweb/models"
+	_ "github.com/go-xorm/dbweb/models"
 	"github.com/tango-contrib/renders"
 )
 
@@ -11,7 +11,7 @@ type Home struct {
 }
 
 func (c *Home) Get() error {
-	engines, err := models.FindEngines()
+	engines, err := c.findEngines()
 	if err != nil {
 		return err
 	}

@@ -22,7 +22,7 @@ func (c *ChgPass) Get() error {
         //disable change pass
         return errors.New("disabled by adminitrator!")
 
-	engines, err := models.FindEngines()
+	engines, err := c.findEngines()
 	if err != nil {
 		return err
 	}

@@ -21,7 +21,7 @@ func (c *Del) Get() error {
 		return err
 	}
 
-	engines, err := models.FindEngines()
+	engines, err := c.findEngines()
 	if err != nil {
 		return err
 	}
