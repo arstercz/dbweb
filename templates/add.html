@@ -8,50 +8,50 @@
 
 	function test(){
 		$.ajax({
-			url:'/test',
+			url:'/test', //
 			data: {
-				'name': $("#name").text(),
-				'host': $("#host").text(),
-				'username': $("#username").text(),
-				'dbname': $("#dbname").text(),
-				'charset': $("#charset").text(),
-				'passwd': $("#passwd").text(),
-			},
-			dataType: 'json',
+				'name': $("#name").text(), //
+				'host': $("#host").text(), //
+				'username': $("#username").text(), //
+				'dbname': $("#dbname").text(), //
+				'charset': $("#charset").text(), //
+				'passwd': $("#passwd").text(), //
+			}, //
+			dataType: 'json', //
 			success: function(content) {
 				if (content['err']) {
-					alert("failed: "+content['err'])
+					alert("failed: "+content['err']) //
 				} else {
 				alert("success: "+content['status']);
 			}
 			}
-		})
+		}) //
 	}
 
 	$(function(){
 		var driver = new Vue({
-			delimiters: ['${', '}'],
-			el: '#sel_driver',
+			delimiters: ['${', '}'], //
+			el: '#sel_driver', //
 			data: {
-				selected: "mysql",
+				selected: "mysql", //
 				dbs: [
 					{{range .dbs}}
-      				{ name: '{{.Name}}', port: {{.DefaultPort}} },
+      				{ name: '{{.Name}}', port: {{.DefaultPort}} }, //
       				{{end}}
     			]
-			},
+			}, //
 			methods: {
 				change_driver: function(event) {
 					for (var i=0;i < this.dbs.length;i++) {
 						if (this.dbs[i].name == this.selected) {
-							$("#port").val(this.dbs[i].port);
+							$("#port").val(this.dbs[i].port); //
 							break
 						}
 					}
 				}
 			}
-		})
-	})
+		}) //
+	}) //
 </script>
 {{end}}
 
