@@ -34,7 +34,7 @@ func Init() error {
 	}
 
 	var confp string = "./usercfg.conf"
-	conf_fh, err := get_config(confp)
+	conf_fh, err := Get_config(confp)
         if err != nil {
 		log.Printf("read usercfg config file error")
 		return errors.New("read usercfg config file error")
@@ -45,7 +45,7 @@ func Init() error {
 
 	// add admin
 	for _, v := range sections {
-		if v == "default" {
+		if (v == "default" || v == "backend") {
 			continue
 		}
 		userItem, err := get_users(conf_fh, v)
@@ -70,7 +70,6 @@ func Init() error {
 				Database: userItem.dbs,
 			})
 		} else {
-			log.Printf("update pass for user %s: %s\n",userItem.name, passwordStr)
 			err = UpdateUser(&User{
 				Id:       userFind.Id,
 				Name:     userItem.name,
