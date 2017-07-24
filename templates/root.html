@@ -24,13 +24,8 @@
 		<div class="pull-right">
 			<nav>
 			  <ul class="pagination">
-			    {{$curPage := .curPage}}
 			    {{$tb := .tb}}
 			    {{$id := .id}}
-			    {{$limit := .limit}}
-			    {{range $k, $v := (Range .totalPage)}}
-			    <li><a href="{{if eq $k $curPage}}#{{else}}/view?id={{$id}}&tb={{$tb}}&start={{multi $k $limit}}{{end}}">{{add $k 1}}</a></li>
-			    {{end}}
 			  </ul>
 			</nav>
 		</div>
@@ -88,13 +83,8 @@
 		<div class="pull-right">
 			<nav>
 			  <ul class="pagination">
-			    {{$curPage := .curPage}}
 			    {{$tb := .tb}}
 			    {{$id := .id}}
-			    {{$limit := .limit}}
-			    {{range $k, $v := (Range .totalPage)}}
-			    <li><a href="{{if eq $k $curPage}}#{{else}}/view?id={{$id}}&tb={{$tb}}&start={{multi $k $limit}}{{end}}">{{add $k 1}}</a></li>
-			    {{end}}
 			  </ul>
 			</nav>
 		</div>
