@@ -9,7 +9,7 @@
 </head>
 <body>
 <div id="app">
-    <Modal v-model="visible" ok-text="ok" cancel-text="" @on-ok="ok" title="Warning" closable=false width=620>{{.warning}}</Modal>
+    <Modal v-model="visible" ok-text="ok" cancel-text="" @on-ok="ok" title="Warning" :closable="false" width=620>{{.warning}}</Modal>
 </div>
 
 <script>
