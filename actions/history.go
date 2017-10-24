@@ -65,7 +65,7 @@ func (c *History) Get() error {
 		limit = 20
 	}
 
-	countSql = "select count(*) as total from `" + tb + "`"
+	countSql = fmt.Sprintf("select count(*) as total from `"+tb+"` where user = \"%s\"", UserMsg.Name)
 	sql = fmt.Sprintf("select user, db, changes, create_time from `"+tb+"` where user = \"%s\" order by create_time desc LIMIT %d OFFSET %d", UserMsg.Name, limit, start)
 	if sql != "" || tb != "" {
 		isExecute = !strings.HasPrefix(strings.ToLower(sql), "select")
