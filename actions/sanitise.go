@@ -62,7 +62,7 @@ func removeCreateDatabaseStatements(sql string) string {
 }
 
 func removeNotPermitStatements(sql string) string {
-	pattern := regexp.MustCompile("(?i)(^PURGE\\s+|TRUNCATE\\s+|^DROP\\s+TABLE\\s+|^GRANT\\s+|^REVOKE\\s+|^SET\\s+)")
+	pattern := regexp.MustCompile("(?i)(^RENAME\\s+|^PURGE\\s+|TRUNCATE\\s+|^DROP\\s+TABLE\\s+|^GRANT\\s+|^REVOKE\\s+|^SET\\s+|ENGINE\\s*=\\s*MyISAM)")
 	lines := strings.Split(sql, "\n")
 	output := make([]string, 0)
 	for _, line := range lines {

@@ -3,7 +3,7 @@ package actions
 import (
 	"strings"
 	"regexp"
-	_ "log"
+	"log"
 
 	"github.com/go-xorm/dbweb/middlewares"
 	"github.com/go-xorm/dbweb/models"
@@ -88,12 +88,12 @@ func (a *AuthRenderBase) findEngines() ([]*models.Engine, error) {
 		re := regexp.MustCompile(`/(.+?)\?charset=`)
 		dbstr := re.FindStringSubmatch(ev.DataSource)
 		//log.Printf("dbstr: %#v\n", dbstr)
-		for _, v := range dbstr {
-			_, ok := UserMsg.Database[v]
-			if ok {
-                       		enginesNew = append(enginesNew, engines[ek])
-			}
-                }
+		_, ok1 := UserMsg.Database[dbstr[1]]
+		_, ok2 := UserMsg.Database["all"]
+		if ok1 || ok2 {
+			log.Printf("db: %s\n", engines[ek])
+               		enginesNew = append(enginesNew, engines[ek])
+		}
         }
 	return enginesNew, nil
 }

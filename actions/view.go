@@ -102,7 +102,7 @@ func (c *View) Get() error {
 	}
 	if sql != sql2 && sql2 == "" {
 		return c.Render("warn.html", renders.T{
-			"warning": fmt.Sprintf("'%s' is not permit to execute, concat to administrtor", sql),
+			"warning": fmt.Sprintf("'%s' is not permit to execute, contact to administrtor", sql),
 		})
 	}
 	sql = sql2
